@@ -3,27 +3,19 @@
 
 using namespace std;
 int main(int argc, char *argv[]) {
-  long int n = 6008514755143;
+  long long n = 600851475143;
+  int factor = 2;
   int lastFactor = 1;
-  int factor = 3;
-  if (n % 2 == 0) {
-    n /= 2;
-    lastFactor = 2;
-    while (n % 2 == 0) {
-      n /= 2;
-    }
-  }
   while (n > 1) {
     if (n % factor == 0) {
-      n /= factor;
       lastFactor = factor;
+      n /= factor;
       while (n % factor == 0) {
         n /= factor;
       }
     }
-    cout << "factor : " << factor << endl;
-    factor = factor + 2;
+    factor = factor + 1;
   }
-  cout << "factor : " << factor << endl;
+  cout << "factor : " << lastFactor << endl;
   return 0;
 }
