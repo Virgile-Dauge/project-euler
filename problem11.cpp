@@ -45,30 +45,29 @@ static int coucou[xSize][ySize] = {
     {1,  70, 54, 71, 83, 51, 54, 69, 16, 92,
      33, 48, 61, 43, 52, 1,  89, 19, 67, 48},
 };
-bool isInBounds(int x, int y) {
+bool isInBounds(int const &x, int const &y) {
   return x >= 0 && x < xSize && y >= 0 && y < ySize;
 }
-int product(int x, int y, int dx, int dy, int n, int currentMaxProd) {
-  if (!isInBounds(x + (n - 1) * dx, y + (n - 1) * dy)) {
-    return currentMaxProd;
+int product(int const &startX, int const &startY, int const &dx, int const &dy,
+            int const &n, int *currentMaxProd) {
+  if (!isInBounds(startX + (n - 1) * dx, startY + (n - 1) * dy)) {
+    return -1;
   }
-
   int prod = 1;
-  for (int i = 0; i < n; i++, x += dx, y += dy)
+  for (int i = 0, x = startX, y = startY; i < n; i++, x += dx, y += dy)
     prod *= coucou[y][x];
-  if (prod > currentMaxProd)
-    return prod;
-  else
-    return currentMaxProd;
+  if (prod > *currentMaxProd)
+    *currentMaxProd = prod;
+  return 0;
 }
 int main(int argc, char *argv[]) {
   int maxProd = -1;
   for (int y = 0; y < ySize; y++) {
     for (int x = 0; x < xSize; x++) {
-      maxProd = product(x, y, 1, 0, 4, maxProd);
-      maxProd = product(x, y, 0, 1, 4, maxProd);
-      maxProd = product(x, y, 1, 1, 4, maxProd);
-      maxProd = product(x, y, 1, -1, 4, maxProd);
+      product(x, y, 1, 0, 4, &maxProd);
+      product(x, y, 0, 1, 4, &maxProd);
+      product(x, y, 1, 1, 4, &maxProd);
+      product(x, y, 1, -1, 4, &maxProd);
     }
   }
   std::cout << maxProd << "\n";
